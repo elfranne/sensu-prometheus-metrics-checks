@@ -5,7 +5,6 @@ import (
 	"io"
 	"math"
 	"net/http"
-	"strings"
 
 	corev2 "github.com/sensu/core/v2"
 	"github.com/sensu/sensu-plugin-sdk/sensu"
@@ -53,7 +52,7 @@ var (
 		&sensu.PluginConfigOption[string]{
 			Path:     "string",
 			Argument: "string",
-			Usage:    "Specific string of metric",
+			Usage:    "Specific string value of metric",
 			Value:    &plugin.String,
 		},
 		&sensu.PluginConfigOption[string]{
@@ -88,37 +87,48 @@ func Round(x, unit float64) float64 {
 func executeCheck(event *corev2.Event) (int, error) {
 	resp, err := http.Get(plugin.Url)
 	if err != nil {
-		fmt.Printf("failed to querioutil.ReadAlly metrics: %s\n", err)
+		fmt.Printf("failed to query metrics: %s\n", err)
 		return sensu.CheckStateUnknown, nil
 	}
-	body, err := io.ReadAll.(resp.Body)
+
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("failed to parse body: %s\n", err)
 		return sensu.CheckStateUnknown, nil
 	}
 
-	for _, m := range body {
-		v := strings.Fields(m)
-		if v[0] == plugin.Metric {
-			fmt.Printf("checking metric: %s\n", v[0])
+	// fmt.Printf("body: %s\n", body)
+	for _, m := range string(body) {
 
-			if len(plugin.String) > 0 && v[1] != plugin.String {
-				fmt.Printf("metric %s is not matching %s\n", v[0], v[1])
-				return sensu.CheckStateCritical, nil
-			}
-			if len(plugin.Max) > 0 && v[1] > plugin.Max {
-				fmt.Printf("metric %s is exeedind max (%f): %f\n", v[0], plugin.Max, v[1])
-				return sensu.CheckStateCritical, nil
-			}
-			if len(plugin.Min) > 0 && v[1] < plugin.Min {
-				fmt.Printf("metric %s is lower than min (%f): %f\n", v[0], plugin.Min, v[1])
-				return sensu.CheckStateCritical, nil
-			}
-			if len(plugin.Value) > 0 && v[1] == plugin.Value {
-				fmt.Printf("metric %s is not equal (%f): %f\n", v[0], plugin.Value, v[1])
-				return sensu.CheckStateCritical, nil
-			}
-		}
+		fmt.Printf("checking metric: %s\n", string(m))
+
 	}
+	// 	v := strings.Fields(string(m))
+	// 	if v[0] == plugin.Metric {
+	// 		fmt.Printf("checking metric: %s\n", v[0])
+
+	// if len(plugin.String) > 0 && v[1] != plugin.String {
+	// 	fmt.Printf("metric %s is not matching %s\n", v[0], v[1])
+	// 	return sensu.CheckStateCritical, nil
+	// }
+
+	// if float32(v[1]) {
+
+	// }
+
+	// if plugin.Max && v[1] > plugin.Max {
+	// 	fmt.Printf("metric %s is exeedind max (%f): %f\n", v[0], plugin.Max, v[1])
+	// 	return sensu.CheckStateCritical, nil
+	// }
+	// if len(plugin.Min) > 0 && v[1] < plugin.Min {
+	// 	fmt.Printf("metric %s is lower than min (%f): %f\n", v[0], plugin.Min, v[1])
+	// 	return sensu.CheckStateCritical, nil
+	// }
+	// if len(plugin.Value) > 0 && v[1] == plugin.Value {
+	// 	fmt.Printf("metric %s is not equal (%f): %f\n", v[0], plugin.Value, v[1])
+	// 	return sensu.CheckStateCritical, nil
+	// }
+	// 	}
+	// }
 	return sensu.CheckStateOK, nil
 }
