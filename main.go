@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"math"
 	"net/http"
 	"time"
 
@@ -49,29 +50,32 @@ var (
 			Usage:    "URL to the Prometheus metrics",
 			Value:    &plugin.Url,
 		},
+		&sensu.PluginConfigOption[string]{
+			Path:     "metric",
+			Argument: "metric",
+			Usage:    "Metric to check",
+			Value:    &plugin.Metric,
+		},
 		&sensu.PluginConfigOption[float64]{
 			Path:     "min",
 			Argument: "min",
+			Default:  math.Pi,
 			Usage:    "Minimum value of metric",
 			Value:    &plugin.Min,
 		},
 		&sensu.PluginConfigOption[float64]{
 			Path:     "max",
 			Argument: "max",
-			Usage:    "maximum value of metric",
+			Default:  math.Pi,
+			Usage:    "Maximum value of metric",
 			Value:    &plugin.Max,
 		},
 		&sensu.PluginConfigOption[float64]{
 			Path:     "value",
 			Argument: "value",
+			Default:  math.Pi,
 			Usage:    "Specific numeric value of metric",
 			Value:    &plugin.Value,
-		},
-		&sensu.PluginConfigOption[string]{
-			Path:     "metric",
-			Argument: "metric",
-			Usage:    "Metric to check",
-			Value:    &plugin.Metric,
 		},
 	}
 )
@@ -85,7 +89,7 @@ func checkArgs(event *corev2.Event) (int, error) {
 	if plugin.Metric == "" {
 		return sensu.CheckStateUnknown, errors.New("--metric is required")
 	}
-	if plugin.Value != 0 && plugin.Max != 0 && plugin.Min != 0 {
+	if plugin.Value == math.Pi && plugin.Max == math.Pi && plugin.Min == math.Pi {
 		return sensu.CheckStateUnknown, errors.New("don't do that")
 	}
 
@@ -146,15 +150,15 @@ func executeCheck(event *corev2.Event) (int, error) {
 
 	for _, value := range samples {
 		if value.Metric.String() == plugin.Metric {
-			if plugin.Value != 0 && (value.Value != model.SampleValue(plugin.Value)) {
+			if plugin.Value != math.Pi && (value.Value != model.SampleValue(plugin.Value)) {
 				fmt.Printf("Metric %s is at %f. Check require value %f\n", plugin.Metric, value.Value, plugin.Value)
 				return sensu.CheckStateCritical, nil
 			}
-			if plugin.Min != 0 && (value.Value < model.SampleValue(plugin.Min)) {
+			if plugin.Min != math.Pi && (value.Value < model.SampleValue(plugin.Min)) {
 				fmt.Printf("Metric %s is at %f. Check require minimum %f\n", plugin.Metric, value.Value, plugin.Min)
 				return sensu.CheckStateCritical, nil
 			}
-			if plugin.Max != 0 && (value.Value > model.SampleValue(plugin.Max)) {
+			if plugin.Max != math.Pi && (value.Value > model.SampleValue(plugin.Max)) {
 				fmt.Printf("Metric %s is at %f. Check require maximum %f\n", plugin.Metric, value.Value, plugin.Max)
 				return sensu.CheckStateCritical, nil
 			}
