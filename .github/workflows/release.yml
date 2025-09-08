@@ -1,13 +1,14 @@
 name: goreleaser
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - '*'
 
 jobs:
   goreleaser:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
