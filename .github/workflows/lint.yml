@@ -5,6 +5,8 @@ on: [push]
 jobs:
   test:
     name: Lint
+    permissions:
+      contents: read
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -17,4 +19,4 @@ jobs:
       with:
         go-version-file: 'go.mod'
     - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v6
+      uses: golangci/golangci-lint-action@v8
