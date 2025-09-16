@@ -191,7 +191,10 @@ func QueryExporter(exporterURL string, user string, password string, insecureSki
 	if err != nil {
 		return nil, err
 	}
-	defer expResponse.Body.Close()
+
+	defer func() {
+		_ = expResponse.Body.Close()
+	}()
 
 	if expResponse.StatusCode != http.StatusOK {
 		return nil, errors.New("exporter returned non OK HTTP response status: " + expResponse.Status)
