@@ -191,6 +191,7 @@ func QueryExporter(exporterURL string, user string, password string, insecureSki
 	if err != nil {
 		return nil, err
 	}
+
 	defer func() {
 		_ = expResponse.Body.Close()
 	}()
