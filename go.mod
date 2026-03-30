@@ -1,10 +1,10 @@
 module github.com/elfranne/sensu-prometheus-metrics-checks
 
-go 1.25.1
+go 1.26.0
 
 require (
 	github.com/prometheus/common v0.67.5
-	github.com/sensu/core/v2 v2.20.0
+	github.com/sensu/core/v2 v2.21.0
 	github.com/sensu/sensu-plugin-sdk v0.19.0
 )
 
@@ -40,9 +40,9 @@ require (
 	go.etcd.io/etcd/api/v3 v3.6.4 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/net v0.48.0 // indirect
-	golang.org/x/sys v0.39.0 // indirect
-	golang.org/x/text v0.32.0 // indirect
+	golang.org/x/net v0.51.0 // indirect
+	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20251202230838-ff82c1b0f217 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
 	google.golang.org/grpc v1.79.3 // indirect
