@@ -231,8 +231,10 @@ func executeCheck(event *corev2.Event) (int, error) {
 		return sensu.CheckStateUnknown, nil
 	}
 	exitLater := 0
+	metricFound := false
 	for _, value := range samples {
 		if value.Metric["__name__"] == model.LabelValue(plugin.Metric) {
+			metricFound = true
 			matchLabel := 0
 			if len(plugin.Labels) > 0 {
 				for _, label := range plugin.Labels {
@@ -261,6 +263,10 @@ func executeCheck(event *corev2.Event) (int, error) {
 				exitLater += 1
 			}
 		}
+	}
+	if !metricFound {
+		fmt.Printf("Metric %s not found in exporter response\n", plugin.Metric)
+		return sensu.CheckStateUnknown, nil
 	}
 	if exitLater > 0 {
 		return sensu.CheckStateCritical, nil
