@@ -1,12 +1,21 @@
 name: Go Lint
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  lint:
     name: Lint
-    permissions:
-      contents: read
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
