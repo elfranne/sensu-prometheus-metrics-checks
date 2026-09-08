@@ -7,6 +7,8 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+## [0.3.0] - 2026-09-08
+
 ### Added
 - Test suite covering argument validation, exporter scraping, basic auth, mTLS and the
   OK/CRITICAL/UNKNOWN exit paths.
