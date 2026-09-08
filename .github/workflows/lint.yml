@@ -29,3 +29,8 @@ jobs:
         go-version-file: 'go.mod'
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v9
+      with:
+        # Pinned so a new golangci-lint release cannot turn CI red without a
+        # commit here. Dependabot bumps the action, not this input, so raise
+        # it by hand.
+        version: v2.13.2
