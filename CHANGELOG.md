@@ -7,6 +7,10 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Added
+- Test suite covering argument validation, exporter scraping, basic auth, mTLS and the
+  OK/CRITICAL/UNKNOWN exit paths.
+
 ### Fixed
 - Panic on every scrape (`Invalid name validation scheme requested: unset`) after the
   upgrade to prometheus/common v0.71.0, which requires the text parser to be built with
