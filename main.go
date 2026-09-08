@@ -200,7 +200,7 @@ func QueryExporter(exporterURL string, user string, password string, insecureSki
 		return nil, errors.New("exporter returned non OK HTTP response status: " + expResponse.Status)
 	}
 
-	var parser expfmt.TextParser
+	parser := expfmt.NewTextParser(model.UTF8Validation)
 
 	metricFamilies, err := parser.TextToMetricFamilies(expResponse.Body)
 	if err != nil {
