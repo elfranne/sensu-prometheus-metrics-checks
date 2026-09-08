@@ -89,7 +89,7 @@ var (
 		&sensu.SlicePluginConfigOption[string]{
 			Path:     "label",
 			Argument: "label",
-			Usage:    "limit check to metric with sepcific label, can be used muliple times",
+			Usage:    "limit check to metric with specific label, can be used multiple times",
 			Default:  []string{},
 			Value:    &plugin.Labels,
 		},
@@ -271,7 +271,7 @@ func executeCheck(event *corev2.Event) (int, error) {
 	if exitLater > 0 {
 		return sensu.CheckStateCritical, nil
 	} else {
-		fmt.Printf("Metric %s is within reqired value\n", plugin.Metric)
+		fmt.Printf("Metric %s is within required value\n", plugin.Metric)
 		return sensu.CheckStateOK, nil
 	}
 }
