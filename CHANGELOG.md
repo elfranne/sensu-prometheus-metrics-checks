@@ -14,6 +14,7 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 - Return UNKNOWN instead of OK when the requested metric is absent from the exporter
   response.
+- Updated transitive dependencies and tidied `go.mod`.
 
 ### Fixed
 - Panic on every scrape (`Invalid name validation scheme requested: unset`) after the
